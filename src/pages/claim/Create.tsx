@@ -8,6 +8,7 @@ function ClaimCreation() {
     const [lastName, setLastName] = useState<string | null>('');
     const [incident, setIncident] = useState<string | null>('');
     const [nrc, setNRC] = useState<number>(0);
+    const [PhoneNumber, setPhoneNumber] = useState<string>('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFiles(e.target.files);
@@ -34,6 +35,10 @@ function ClaimCreation() {
 
     const handleIncidentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setIncident(e.target.value);
+    };
+
+    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPhoneNumber(e.target.value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -65,6 +70,7 @@ function ClaimCreation() {
         console.log("Claim Type:", claimType);
         console.log("Files:", files);
         console.log("Incident:", incident);
+        console.log("phone number:", PhoneNumber);
     };
     return (
         <div className="flex justify-center">
@@ -105,6 +111,14 @@ function ClaimCreation() {
                         type="text"
                         className='border border-gray-300 p-2'
                         onChange={handleMiddleNameChange}
+                        required={true}
+                    />
+                    <input
+                        name='phonenumber'
+                        placeholder='Enter your phone number'
+                        type="number"
+                        className='border border-gray-300 p-2'
+                        onChange={handlePhoneNumberChange}
                         required={true}
                     />
                     <hr />
