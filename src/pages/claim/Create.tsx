@@ -131,6 +131,7 @@ function ClaimCreation() {
                         <option value="Travel Insurance Claims">Travel Insurance Claims</option>
                         <option value="Agricultural Insurance Claims">Agricultural Insurance Claims</option>
                         <option value="Workmen’s Compensation Claims">Workmen’s Compensation Claims</option>
+                        <option value="Other">Other</option>
                     </select>
                     <input
                         className='border border-gray-300 p-2 cur'
