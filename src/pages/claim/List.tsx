@@ -1,6 +1,7 @@
-import { Eye, Plus } from 'lucide-react';
 import React from 'react'
+import { Eye, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import useClaims from 'src/hooks/Claims';
 import { textShortener } from 'src/lib/utils';
 
 function ClaimList() {
@@ -15,60 +16,8 @@ function ClaimList() {
         navigate(path);
     }
 
-    const claims = [
-        {
-            id: 1,
-            claimType: 'Motor Insurance Claims',
-            firstName: 'John',
-            middleName: '',
-            lastName: 'Doe',
-            incident: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            nrc: '123452423',
-            PhoneNumber: '0974000004',
-            files: [1, 2, 3],
-            dateIssued: '01/02/25',
-            status: 'Approved',
-        },
-        {
-            id: 2,
-            claimType: 'Motor Insurance Claims',
-            firstName: 'James',
-            middleName: '',
-            lastName: 'Doe',
-            incident: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            nrc: '123452423',
-            PhoneNumber: '0974000004',
-            files: [1, 2, 3],
-            dateIssued: '01/02/25',
-            status: 'Approved',
-        },
-        {
-            id: 3,
-            claimType: 'Motor Insurance Claims',
-            firstName: 'Annabel',
-            middleName: '',
-            lastName: 'Tembo',
-            incident: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            nrc: '123452423',
-            PhoneNumber: '0974000004',
-            files: [1, 2, 3],
-            dateIssued: '01/02/25',
-            status: 'Approved',
-        },
-        {
-            id: 4,
-            claimType: 'Motor Insurance Claims',
-            firstName: 'Annabel',
-            middleName: '',
-            lastName: 'Tembo',
-            incident: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            nrc: '123452423',
-            PhoneNumber: '0974000004',
-            files: [1, 2, 3],
-            dateIssued: '01/02/25',
-            status: 'Approved',
-        },
-    ]
+    const { claims } = useClaims();
+
     return (
         <div className='pb-16'>
             <div className='border-b pb-5'>
@@ -83,10 +32,11 @@ function ClaimList() {
             </div>
             <div className='mt-4 w-auto grid lg:grid-cols-2 md:grid-cols-2 gap-2'>
                 {claims.map((claim: any) => {
+                    console.log(claim)
                     return (
                         <div key={claim.id} className='border shadow-md p-2 text-[12pt]'>
                             <div className='flex justify-between'>
-                                <p className='text-gray-700'>{claim.dateIssued}</p>
+                                <p className='text-gray-700'>{claim.date_issued}</p>
                                 <p className='text-gray-700'>{claim.status}</p>
                             </div>
                             <p className='text-gray-700'>{textShortener(claim.incident, 200)}</p>
