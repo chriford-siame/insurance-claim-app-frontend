@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 function ClaimCreation() {
@@ -8,7 +9,7 @@ function ClaimCreation() {
     const [lastName, setLastName] = useState<string | null>('');
     const [incident, setIncident] = useState<string | null>('');
     const [nrc, setNRC] = useState<number>(0);
-    const [PhoneNumber, setPhoneNumber] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFiles(e.target.files);
@@ -46,32 +47,38 @@ function ClaimCreation() {
         if (!files || files.length === 0) return;
 
         const formData = new FormData();
+
+        formData.append('first_name', firstName || '');
+        formData.append('middle_name', middleName || '');
+        formData.append('last_name', lastName || '');
+        formData.append('claim_type', claimType || '');
+        formData.append('nrc', nrc.toString());
+        formData.append('incident', incident || '');
+        formData.append('phone_number', phoneNumber || '');
+
         for (let i = 0; i < files.length; i++) {
             formData.append('files', files[i]); // Or 'files[]' depending on backend
         }
 
         try {
-            const res = await fetch('/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await res.json();
-            console.log('Upload successful:', data);
+            const token = localStorage.getItem('access_token'); // Store token on login
+            const res = await axios.post(
+                'http://localhost:8000/claims/',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+            console.log('Upload successful:', res.data);
         } catch (err) {
             console.error('Upload failed:', err);
         }
-        // Log form values
-        console.log("Form Submission:");
-        console.log("First Name:", firstName);
-        console.log("Middle Name:", middleName);
-        console.log("Last Name:", lastName);
-        console.log("NRC:", nrc);
-        console.log("Claim Type:", claimType);
-        console.log("Files:", files);
-        console.log("Incident:", incident);
-        console.log("phone number:", PhoneNumber);
-    };
+    }
+
+
     return (
         <div className="flex justify-center">
             <div className=" md:w-[75%] lg:md:w-[75%] xl:md:w-[75%] text-2xl">
@@ -124,14 +131,14 @@ function ClaimCreation() {
                     <hr />
                     <label htmlFor="claimType">Claim Type</label>
                     <select name="claimType" id="claimType" className='border border-gray-300 p-2' onChange={handleClaimTypeChange} value={claimType || ''}>
-                        <option defaultValue="Motor Insurance Claims">Motor Insurance Claims</option>
-                        <option value="Medical Insurance Claims">Medical Insurance Claims</option>
-                        <option value="Property Insurance Claims">Property Insurance Claims</option>
-                        <option value="Life Insurance Claims">Life Insurance Claims</option>
-                        <option value="Travel Insurance Claims">Travel Insurance Claims</option>
-                        <option value="Agricultural Insurance Claims">Agricultural Insurance Claims</option>
-                        <option value="Workmen’s Compensation Claims">Workmen’s Compensation Claims</option>
-                        <option value="Other">Other</option>
+                        <option defaultValue="motor">Motor Insurance</option>
+                        <option value="medical">Medical Insurance</option>
+                        <option value="property">Property Insurance</option>
+                        <option value="life">Life Insurance</option>
+                        <option value="travel">Travel Insurance</option>
+                        <option value="agriculture">Agricultural Insurance</option>
+                        <option value="workmen">Workmen’s Compensation</option>
+                        <option value="other">Other</option>
                     </select>
                     <input
                         className='border border-gray-300 p-2 cur'
