@@ -14,7 +14,10 @@ function Navbar() {
         </div>
         :
         <div className='text-[12pt]'>
-          <button onClick={() => handleLogout()}  className='text-white bg-gray-600 hover:bg-gray-600 px-2 rounded-md'>logout</button>
+          <button onClick={() => {
+            handleLogout();
+            window.location.href = "/";
+          }}  className='text-white bg-gray-600 hover:bg-gray-600 px-2 rounded-md'>logout</button>
         </div>
       }
     </div>
