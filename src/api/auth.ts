@@ -13,6 +13,16 @@ export const login = async (username: string, password: string) => {
   return response.data;
 };
 
+// Function to log in and get access & refresh tokens
+export const signup = async (username: string, first_name: string, last_name: string, password: string) => {
+  const response = await axios.post(`http://localhost:8000/users/`, { username, first_name, last_name, password });
+  if (response.data.access) {
+    alert("account create successfully")
+    window.location.href = "/login"
+  }
+  return response.data;
+};
+
 // Function to refresh token when it expires
 export const refreshToken = async () => {
   const refresh_token = localStorage.getItem("refresh_token");

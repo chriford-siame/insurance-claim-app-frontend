@@ -9,6 +9,7 @@ const ClaimCreation = React.lazy(() => import('./pages/claim/Create'));
 const ClaimView = React.lazy(() => import('./pages/claim/View'));
 const ClaimList = React.lazy(() => import('./pages/claim/List'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
+const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const RevieverPannel = React.lazy(() => import('./pages/reviewer/ReviewerPannel'));
 
 function App() {
@@ -49,6 +50,13 @@ function App() {
                   <CustomLoarder />
                 }>
                   <Login />
+                </React.Suspense>
+              } />
+              <Route path="/signup" element={
+                <React.Suspense fallback={
+                  <CustomLoarder />
+                }>
+                  <Signup />
                 </React.Suspense>
               } />
 

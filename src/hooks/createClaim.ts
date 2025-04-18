@@ -5,7 +5,7 @@ import useUser from "./User";
 
 const useAddClaim = (
   formData: Omit<IClaim, 'id' | 'date_issued'>,
-  claimFiles: FileList,
+  claimFiles: any,
   formIsValid: boolean
 ) => {
   const [claim, setClaim] = useState<IClaim>();
@@ -22,7 +22,9 @@ const useAddClaim = (
     const submitClaim = async () => {
       setLoading(true);
       const form = new FormData();
+      console.log(formData)
 
+      form.append("user", user);
       form.append("first_name", formData.first_name);
       form.append("middle_name", formData.middle_name);
       form.append("last_name", formData.last_name);
@@ -37,7 +39,7 @@ const useAddClaim = (
       }
 
       try {
-        const response = await axios.post<IClaim>(
+        const response = await axios.post(
           "http://localhost:8000/claims/",
           form,
           {
@@ -47,8 +49,9 @@ const useAddClaim = (
             },
           }
         );
-
+        
         setClaim(response.data);
+        window.location.href = "/";
       } catch (err) {
         setError("Failed to submit claim");
         console.error(err);
@@ -62,3 +65,4 @@ const useAddClaim = (
 
   return { claim, loading, error };
 };
+export default useAddClaim;
