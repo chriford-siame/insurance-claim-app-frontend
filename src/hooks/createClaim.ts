@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { IClaim } from "src/interfaces/claim";
+import useUser from "./User";
 
-const useUserClaims = () => {
-  const [userClaims, setUserClaims] = useState<IClaim[] | []>([]);
+const useClaim = (formData: FormData) => {
+  const [claim, setClaim] = useState<IClaim | string | {}>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { user } = useUser();
+  
   useEffect(() => {
-    const fetchUserClaims = async () => {
+    const addClaim = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const claimResponse = await axios.get<IClaim[]>(
-          `http://localhost:8000/claims/list/`,
+        const response = await axios.post<IClaim>(
+          `http://localhost:8000/claims/`,
+          formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -20,17 +24,18 @@ const useUserClaims = () => {
             },
           }
         );
-        setUserClaims(claimResponse.data);
+        setClaim(response.data);
       } catch (err) {
-        setError("Failed to fetch user claims.");
+        setError("Failed to create claim");
       } finally {
         setLoading(false);
       }
-    }
-    fetchUserClaims();
+    };
+
+    addClaim();
   }, []);
 
-  return { userClaims, loading, error };
+  return { claim, loading, error };
 };
 
-export default useUserClaims;
+export default useClaim;

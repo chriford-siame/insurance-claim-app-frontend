@@ -1,4 +1,5 @@
 import axios from 'axios';
+import OpenAI from 'openai';
 import React, { useState } from 'react';
 
 function ClaimCreation() {
@@ -9,6 +10,7 @@ function ClaimCreation() {
     const [lastName, setLastName] = useState<string | null>('');
     const [incident, setIncident] = useState<string | null>('');
     const [nrc, setNRC] = useState<number>(0);
+    const [AIResponse, setAIResponse] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +46,43 @@ function ClaimCreation() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!files || files.length === 0) return;
+        
+        // const completion = openai.chat.completions.create({
+        //     model: "gpt-4o-mini",
+        //     store: true,
+        //     messages: [
+            //         { "role": "user", "content": `return true if the following insurance claim incident is valid otherwise return false without using more that 10 words: \n ${incident}` },
+            //     ],
+        // });
+
+        // completion.then((result: any) => setAIResponse(result.choices[0].message));
+        // console.log(AIResponse);
+        
+        try {
+            const openai = new OpenAI({
+                apiKey: "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",
+                dangerouslyAllowBrowser: true,
+            });
+            const completion = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "user",
+                        content: `return true if the following insurance claim incident is valid otherwise return false without using more than 10 words: \n ${incident}`,
+                    },
+                ],
+            });
+
+            setAIResponse(completion.choices[0].message.toString());
+            console.log(completion.choices[0].message);
+        } catch (err: any) {
+            if (err.status === 429) {
+                console.error("Rate limit exceeded. Please try again later.");
+            } else {
+                console.error("OpenAI API error:", err);
+            }
+        }
+
 
         const formData = new FormData();
 
@@ -56,9 +94,13 @@ function ClaimCreation() {
         formData.append('incident', incident || '');
         formData.append('phone_number', phoneNumber || '');
 
-        for (let i = 0; i < files.length; i++) {
-            formData.append('files', files[i]); // Or 'files[]' depending on backend
-        }
+
+        if (!files || files.length === 0) {
+        } else {
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]); // Or 'files[]' depending on backend
+            }
+        };
 
         try {
             const token = localStorage.getItem('access_token'); // Store token on login
@@ -118,7 +160,6 @@ function ClaimCreation() {
                         type="text"
                         className='border border-gray-300 p-2'
                         onChange={handleMiddleNameChange}
-                        required={true}
                     />
                     <input
                         name='phonenumber'
