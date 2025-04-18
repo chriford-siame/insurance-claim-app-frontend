@@ -51,7 +51,7 @@ function Login() {
                         name='password'
                         id='password'
                         placeholder=''
-                        type="text"
+                        type="password"
                         className='border border-gray-300 p-2'
                         onChange={handlePasswordChange}
                         required={true}
