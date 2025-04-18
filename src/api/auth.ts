@@ -6,6 +6,7 @@ const API_URL = "http://localhost:8000/token/"; // Adjust if using a deployed ba
 export const login = async (username: string, password: string) => {
   const response = await axios.post(`${API_URL}`, { username, password });
   if (response.data.access) {
+    localStorage.setItem("username", username);
     localStorage.setItem("access_token", response.data.access);
     localStorage.setItem("refresh_token", response.data.refresh);
   }
@@ -26,6 +27,7 @@ export const refreshToken = async () => {
 
 // Function to log out and remove tokens
 export const logout = () => {
+  localStorage.removeItem("username");
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 };
