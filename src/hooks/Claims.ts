@@ -12,7 +12,7 @@ const useClaims = () => {
       const token = localStorage.getItem('access_token');
       try {
         const response = await axios.get(
-          "http://localhost:8000/claims/",
+          `http://localhost:8000/claims/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -14,7 +14,7 @@ const useUserClaims = () => {
       const username = localStorage.getItem('username');
       try {
         const claimResponse = await axios.get(
-          `http://localhost:8000/claims/`,
+          `http://localhost:8000/claims/list/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
