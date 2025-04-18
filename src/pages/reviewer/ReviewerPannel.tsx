@@ -22,7 +22,6 @@ function ReviewerPannel() {
             <p className="text-black-500 font-bold">My Claims</p>
           </div>
           <div>
-            {/* <button onClick={() => navigate('/')} className="text-white text-[12pt] bg-green-500 rounded-md  px-2 flex justify-center"><span><Plus size={15} className='mt-2' /></span><p>Add claim</p></button> */}
           </div>
         </div>
       </div>
