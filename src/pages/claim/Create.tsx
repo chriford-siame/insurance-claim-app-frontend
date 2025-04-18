@@ -1,125 +1,89 @@
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import OpenAI from 'openai';
-import React, { useState } from 'react';
+import { IClaim } from 'src/interfaces/claim';
+import useAddClaim from 'src/hooks/createClaim';
 
 function ClaimCreation() {
-    const [files, setFiles] = useState<FileList | null>(null);
-    const [claimType, setClaimType] = useState<string | null>('');
-    const [firstName, setFirstName] = useState<string | null>('');
-    const [middleName, setMiddleName] = useState<string | null>('');
-    const [lastName, setLastName] = useState<string | null>('');
-    const [incident, setIncident] = useState<string | null>('');
-    const [nrc, setNRC] = useState<number>(0);
+    const [formIsFilled, setFormIsFilled] = useState<boolean>(false);
+    const [files, setFiles] = useState<any>([]);
+    const [data, setData] = useState<Omit<IClaim, 'id' | 'date_issued'>>({
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        claim_type: '',
+        nrc: '',
+        incident: '',
+        phone_number: '',
+        status: 'pending',
+    })
     const [AIResponse, setAIResponse] = useState<string>('');
-    const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+
+    useAddClaim(data, files, formIsFilled);
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFiles(e.target.files);
     };
     const handleClaimTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setClaimType(e.target.value);
+        setData({ ...data, claim_type: e.target.value || '' })
     };
 
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
+        setData({ ...data, first_name: e.target.value || '' })
     };
 
     const handleMiddleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMiddleName(e.target.value);
+        setData({ ...data, middle_name: e.target.value || '' })
     };
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
+        setData({ ...data, last_name: e.target.value || '' })
     };
 
     const handleNRCChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNRC(parseInt(e.target.value));
+        setData({ ...data, nrc: e.target.value.toString() })
     };
 
     const handleIncidentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setIncident(e.target.value);
+        setData({ ...data, incident: e.target.value || '' })
     };
 
     const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(e.target.value);
+        setData({ ...data, phone_number: e.target.value || '' })
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        // const completion = openai.chat.completions.create({
-        //     model: "gpt-4o-mini",
-        //     store: true,
-        //     messages: [
-            //         { "role": "user", "content": `return true if the following insurance claim incident is valid otherwise return false without using more that 10 words: \n ${incident}` },
-            //     ],
-        // });
+        // try {
+        //     const openai = new OpenAI({
+        //         apiKey: process.env.OPENAI_KEY,
+        //     });
+        //     const completion = openai.chat.completions.create({
+        //         model: "gpt-4o-mini",
+        //         store: true,
+        //         messages: [
+        //             { "role": "user", "content": `return true if the following insurance claim incident is valid otherwise return false without using more that 10 words: \n ${data.incident}` },
+        //         ],
+        //     });
 
-        // completion.then((result: any) => setAIResponse(result.choices[0].message));
-        // console.log(AIResponse);
-        
-        try {
-            const openai = new OpenAI({
-                apiKey: "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",
-                dangerouslyAllowBrowser: true,
-            });
-            const completion = await openai.chat.completions.create({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "user",
-                        content: `return true if the following insurance claim incident is valid otherwise return false without using more than 10 words: \n ${incident}`,
-                    },
-                ],
-            });
+        //     completion.then((result: any) => {
+        //         const message = `${result.choices[0].message}`;
+        //         if (!message.toLowerCase().includes('true')) {
+        //             alert("")
+        //             return
+        //         }
+        //     });
+        // } catch (err: any) {
+        //     if (err.status === 429) {
+        //         console.error("Rate limit exceeded. Please try again later.");
+        //     } else {
+        //         console.error("OpenAI API error:", err);
+        //     }
+        // }
 
-            setAIResponse(completion.choices[0].message.toString());
-            console.log(completion.choices[0].message);
-        } catch (err: any) {
-            if (err.status === 429) {
-                console.error("Rate limit exceeded. Please try again later.");
-            } else {
-                console.error("OpenAI API error:", err);
-            }
-        }
-
-
-        const formData = new FormData();
-
-        formData.append('first_name', firstName || '');
-        formData.append('middle_name', middleName || '');
-        formData.append('last_name', lastName || '');
-        formData.append('claim_type', claimType || '');
-        formData.append('nrc', nrc.toString());
-        formData.append('incident', incident || '');
-        formData.append('phone_number', phoneNumber || '');
-
-
-        if (!files || files.length === 0) {
-        } else {
-            for (let i = 0; i < files.length; i++) {
-                formData.append('files', files[i]); // Or 'files[]' depending on backend
-            }
-        };
-
-        try {
-            const token = localStorage.getItem('access_token'); // Store token on login
-            const res = await axios.post(
-                'http://localhost:8000/claims/',
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
-            );
-            console.log('Upload successful:', res.data);
-        } catch (err) {
-            console.error('Upload failed:', err);
-        }
-    }
-
+        setFormIsFilled(true)
+    };
 
     return (
         <div className="flex justify-center">
@@ -171,7 +135,7 @@ function ClaimCreation() {
                     />
                     <hr />
                     <label htmlFor="claimType">Claim Type</label>
-                    <select name="claimType" id="claimType" className='border border-gray-300 p-2' onChange={handleClaimTypeChange} value={claimType || ''}>
+                    <select name="claimType" id="claimType" className='border border-gray-300 p-2' onChange={handleClaimTypeChange} value={data.claim_type || ''}>
                         <option defaultValue="motor">Motor Insurance</option>
                         <option value="medical">Medical Insurance</option>
                         <option value="property">Property Insurance</option>
