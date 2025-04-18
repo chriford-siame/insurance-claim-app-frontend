@@ -52,7 +52,7 @@ function App() {
                   <Login />
                 </React.Suspense>
               } />
-              <Route path="/signup" element={
+              <Route path="/register" element={
                 <React.Suspense fallback={
                   <CustomLoarder />
                 }>

@@ -7,8 +7,8 @@ import { textShortener } from 'src/lib/utils';
 function ReviewerPannel() {
   const navigate = useNavigate();
 
-  const claimViewPath = (claim: any) => {
-    let path = `/claim/${claim.id}/view`;
+  const claimViewPath = (id: any) => {
+    let path = `/claim/${id}/view`;
     navigate(path);
   }
 
@@ -16,12 +16,14 @@ function ReviewerPannel() {
 
   return (
     <div className='pb-16'>
-      <div className='border-b pb-5'>
+      <div className='border-b pb-1'>
+        
         <div className="flex justify-between my-2 w-full">
           <div>
-            <p className="text-black-500 font-bold">My Claims</p>
+            <p className="text-gray-600 font-bold">Admin Pannel</p>
           </div>
           <div>
+
           </div>
         </div>
       </div>
@@ -36,7 +38,7 @@ function ReviewerPannel() {
               </div>
               <p className='text-gray-700'>{textShortener(claim.incident, 200)}</p>
               <div className="flex justify-center">
-                <a onClick={() => claimViewPath(claim)} className="text-blue-400 text-[12pt] rounded-md  px-2 flex justify-center gap-1 cursor-pointer"><span> </span> <p>view claim</p></a>
+                <a onClick={() => alert((claim.id))} className="text-blue-400 text-[12pt] rounded-md  px-2 flex justify-center gap-1 cursor-pointer"><span> </span> <p>view claim</p></a>
               </div>
             </div>
           );
