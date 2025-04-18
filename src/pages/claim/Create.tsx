@@ -53,34 +53,34 @@ function ClaimCreation() {
         setData({ ...data, phone_number: e.target.value || '' })
     };
 
+    // try {
+    //     const openai = new OpenAI({
+    //         apiKey: process.env.OPENAI_KEY,
+    //     });
+    //     const completion = openai.chat.completions.create({
+    //         model: "gpt-4o-mini",
+    //         store: true,
+    //         messages: [
+    //             { "role": "user", "content": `return true if the following insurance claim incident is valid otherwise return false without using more that 10 words: \n ${data.incident}` },
+    //         ],
+    //     });
+
+    //     completion.then((result: any) => {
+    //         const message = `${result.choices[0].message}`;
+    //         if (!message.toLowerCase().includes('true')) {
+    //             alert("")
+    //             return
+    //         }
+    //     });
+    // } catch (err: any) {
+    //     if (err.status === 429) {
+    //         console.error("Rate limit exceeded. Please try again later.");
+    //     } else {
+    //         console.error("OpenAI API error:", err);
+    //     }
+    // }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // try {
-        //     const openai = new OpenAI({
-        //         apiKey: process.env.OPENAI_KEY,
-        //     });
-        //     const completion = openai.chat.completions.create({
-        //         model: "gpt-4o-mini",
-        //         store: true,
-        //         messages: [
-        //             { "role": "user", "content": `return true if the following insurance claim incident is valid otherwise return false without using more that 10 words: \n ${data.incident}` },
-        //         ],
-        //     });
-
-        //     completion.then((result: any) => {
-        //         const message = `${result.choices[0].message}`;
-        //         if (!message.toLowerCase().includes('true')) {
-        //             alert("")
-        //             return
-        //         }
-        //     });
-        // } catch (err: any) {
-        //     if (err.status === 429) {
-        //         console.error("Rate limit exceeded. Please try again later.");
-        //     } else {
-        //         console.error("OpenAI API error:", err);
-        //     }
-        // }
 
         setFormIsFilled(true)
     };
@@ -135,7 +135,7 @@ function ClaimCreation() {
                     />
                     <hr />
                     <label htmlFor="claimType">Claim Type</label>
-                    <select name="claimType" id="claimType" className='border border-gray-300 p-2' onChange={handleClaimTypeChange} value={data.claim_type || ''}>
+                    <select name="claimType" id="claimType" className='border border-gray-300 p-2' onChange={handleClaimTypeChange} value={data.claim_type}>
                         <option defaultValue="motor">Motor Insurance</option>
                         <option value="medical">Medical Insurance</option>
                         <option value="property">Property Insurance</option>
