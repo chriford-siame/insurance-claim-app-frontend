@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { IClaim } from "src/interfaces/claim";
 
 const useUser = () => {
     const [user, setUser] = useState({});
@@ -12,7 +11,7 @@ const useUser = () => {
     useEffect(() => {
       const fetchUser = async () => {
         try {
-          const response = await axios.get<IClaim>(`http://localhost:8000/users/${username}/`);
+          const response = await axios.get(`http://localhost:8000/users/${username}/`);
           setUser(response.data);
         } catch (err) {
           setError("Failed to fetch user");
