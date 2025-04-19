@@ -14,6 +14,7 @@ function ClaimCreation() {
         nrc: '',
         incident: '',
         phone_number: '',
+        comment: ''
     })
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
