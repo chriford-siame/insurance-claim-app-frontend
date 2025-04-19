@@ -40,12 +40,12 @@ function App() {
                 } />
               : null}
 
-              { user && !user.is_superuser ?
+              { user && user.is_superuser ?
                 <Route path="/claim/:id/review" element={
                   <React.Suspense fallback={
                     <CustomLoarder />
                   }>
-                    {isAuthenticated ? <ClaimReview /> : <Navigate to="/login" />}
+                    {isAuthenticated ? <ClaimList /> : <Navigate to="/login" />}
                   </React.Suspense>
                 } />
               : null}
