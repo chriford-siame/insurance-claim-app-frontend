@@ -2,12 +2,12 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import useClaim from 'src/hooks/Claim';
 
-function ClaimView() {
+function ClaimReView() {
     const { id } = useParams();
     const { claim } = useClaim(id);
     return (
-        <div>View {id}</div>
+        <div>Review {id}</div>
     )
 }
 
-export default ClaimView;
+export default ClaimReView;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { IClaim } from "src/interfaces/claim";
 
-const useClaim = (id: string | number) => {
+const useClaim = (id: string | number | undefined) => {
   const [claim, setClaim] = useState<IClaim | {}>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
