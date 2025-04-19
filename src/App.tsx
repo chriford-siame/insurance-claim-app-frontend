@@ -45,7 +45,7 @@ function App() {
                   <React.Suspense fallback={
                     <CustomLoarder />
                   }>
-                    {isAuthenticated ? <ClaimList /> : <Navigate to="/login" />}
+                    {isAuthenticated ? <ClaimReview /> : <Navigate to="/login" />}
                   </React.Suspense>
                 } />
               : null}
