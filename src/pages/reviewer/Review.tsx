@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { X } from 'lucide-react';
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import useClaim from 'src/hooks/Claim';
@@ -33,6 +34,7 @@ function ReView() {
                     },
                 }
             );
+            localStorage.removeItem('status')
             window.location.href = '/';
         } catch (err) {
             console.log("An issue occured, contact support")
@@ -54,7 +56,8 @@ function ReView() {
                     },
                 }
             );
-            window.location.href = '/';
+            localStorage.setItem('status', 'true')
+            // window.location.href = '/';
         } catch (err) {
             console.log("An issue occured, contact support")
         }
@@ -119,9 +122,15 @@ function ReView() {
                 <p className='text-gray-500 text-[12pt]'>{claim?.incident}</p>
             </div>
             <div className='border rounded-md p-3 my-3 px-4'>
-                {claim?.status !== 'pending' ?
+                {localStorage.getItem('status') || status ?
                     <form onSubmit={handleSubmit}>
+                        <div className='flex justify-between'>
                         <label htmlFor="status" className='text-gray-600 font-semibold text-[12pt]'>Action</label>
+                        <button type='button' onClick={() => {
+                            localStorage.removeItem("status");
+                            setStatus('')
+                            }} className=' border rounded-full flex justify-center items-center h-[25px] w-[25px] '><X size={18} color='red'/></button>
+                        </div>
                         <select name="status" required={true} id="status" className='border border-gray-300 p-2 mb-2 w-full text-[12pt]' onChange={handleStatusChange} value={review.status}>
                             <option value=""></option>
                             <option value="approved">Approve</option>
