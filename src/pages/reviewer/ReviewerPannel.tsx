@@ -8,7 +8,7 @@ function ReviewerPannel() {
   const navigate = useNavigate();
 
   const claimViewPath = (id: any) => {
-    let path = `/claim/${id}/view`;
+    let path = `/claim/${id}/review`;
     navigate(path);
   }
 
@@ -38,7 +38,7 @@ function ReviewerPannel() {
               </div>
               <p className='text-gray-700'>{textShortener(claim.incident, 200)}</p>
               <div className="flex justify-center">
-                <a onClick={() => alert((claim.id))} className="text-blue-400 text-[12pt] rounded-md  px-2 flex justify-center gap-1 cursor-pointer"><span> </span> <p>view claim</p></a>
+                <a onClick={() => claimViewPath(claim.id)} className="text-blue-400 text-[12pt] rounded-md  px-2 flex justify-center gap-1 cursor-pointer"><span> </span> <p>view claim</p></a>
               </div>
             </div>
           );
