@@ -11,6 +11,7 @@ const ClaimList = React.lazy(() => import('./pages/claim/List'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const RevieverPannel = React.lazy(() => import('./pages/reviewer/ReviewerPannel'));
+const ClaimReview = React.lazy(() => import('./pages/reviewer/Review'));
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -38,6 +39,17 @@ function App() {
                   </React.Suspense>
                 } />
               : null}
+
+              { user && !user.is_superuser ?
+                <Route path="/claim/:id/review" element={
+                  <React.Suspense fallback={
+                    <CustomLoarder />
+                  }>
+                    {isAuthenticated ? <ClaimReview /> : <Navigate to="/login" />}
+                  </React.Suspense>
+                } />
+              : null}
+
               <Route path="/claim/:id/view" element={
                 <React.Suspense fallback={
                   <CustomLoarder />
@@ -45,6 +57,7 @@ function App() {
                   {isAuthenticated ? <ClaimView /> : <Navigate to="/login" />}
                 </React.Suspense>
               } />
+
               <Route path="/login" element={
                 <React.Suspense fallback={
                   <CustomLoarder />
@@ -52,6 +65,7 @@ function App() {
                   <Login />
                 </React.Suspense>
               } />
+
               <Route path="/register" element={
                 <React.Suspense fallback={
                   <CustomLoarder />
@@ -59,7 +73,6 @@ function App() {
                   <Signup />
                 </React.Suspense>
               } />
-
             </Routes>
           </BrowserRouter>
         </div>
