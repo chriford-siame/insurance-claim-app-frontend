@@ -9,4 +9,5 @@ export interface IClaim {
     claim_type: string;
     date_issued: string;
     status: string;
+    comment: string | null
 }
